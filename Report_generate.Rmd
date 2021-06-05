@@ -1,0 +1,35 @@
+---
+title: "Warabandi"
+author: "Harvinder Singh"
+date: "04/06/2021"
+output: rmarkdown::word_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Report Generation of warabandi
+```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE, options(width=200) }
+library(flextable)#Required Packege to print the table
+library(knitr)#Tp produce output file
+
+    data2<-read.csv(file = "mufile.csv", header = T)#specify the outputfile written by function warabandi
+   #data2<-readRDS(file = ./sample.data)
+invisible(by(data2, seq_len(nrow(data2)), function(row) {
+  chak<-"Chak-38 R.B" #Specify the Outlet name 
+distributries<- "R.B II" #Specify the name of Distributries
+dateOI<-date() # Automaticall generated system date
+dateOd<-"Date of distribution __/__/____" #Here you can replace date of distribution
+note1<-"Note: All schedules issued before this, are cancelled" #Universal note
+Year_o_Valid<-"Year: April 2019 to 2025" #Here you can specify vaidity of warabandi
+Issue<-"Issue Serial No:________/___" #Here you can specify serial no. of later issue
+Jal_upbhokta<-"Jal Upbhokta Sangam:" #Designation of issuing warabandi
+d5<-fit_to_width(flextable(row), max_width = 7, inc=1L, max_iter = 20)#Making flextable object
+d5<-add_header_lines(d5, c(paste(Year_o_Valid,"\t","\t", chak), paste(Jal_upbhokta, distributries, "\t","\t", Issue, "\t","\t","\t","\t",  dateOI))) #Adding headers to the table
+d5<-add_footer_lines(d5, c(paste(dateOd, "\t", "\t", note1), paste("President", "\n", "\n", "\n", Jal_upbhokta, distributries))) # Adding footers to the table
+flextable_to_rmd(d5) #Printing the final table
+}))
+
+
+```
